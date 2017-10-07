@@ -26,7 +26,7 @@ setup(
 
     # Author details
     author='Stavros Kolometsos',
-    author_email='skolometsos@orioninnovetions.gr',
+    author_email='skolometsos@orioninnovations.gr',
 
     # Choose your license
     license='',
