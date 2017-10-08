@@ -20,15 +20,15 @@ class Insert(Resource):
 		cond_name = data["instance_id"]
 		in_seg = data["in_seg"]
 		out_seg = data["out_seg"]
-		pops = data["ports"]
+		pops = data["vims"]
 		logging.debug("Starting ordering PoPs")
 		ordered_pop = utils.order_pop(pops) 
 		# Put the incoming PoPs in order 
 		logging.info("Calling set-up-the-rules method")
 		message = utils.setRules(cond_name, in_seg,out_seg,ordered_pop)
 		if flag == 200:
-			flows.append(flow)
-			return jsonify({'flow': flow}, 200)
+			flows.append(data)
+			return jsonify({'flow': data}, 200)
 		else:
 			abort(500, message = "Unknown Error")
 
@@ -92,9 +92,9 @@ class Initialise(Resource):
 			abort(500)
 
 	def get(self):
-		logging.debug("call for stored event. Returning: " + str(events))
+		logging.debug("call for stored event. Returning: " + str(flows))
 		logging.info("Call for flow accepted")
-		return jsonify(events = events)
+		return jsonify(events = flows)
 
 class Deleted(Resource):
 
@@ -127,7 +127,7 @@ class User(Resource):
 		logging.info("Requesting user info")
 		user, flag = utils.getUser()
 		if flag == 200:
-			return jsonify(user = user)
+			return jsonify(siteA = user)
 		else: 
 			abort(500)
 	
@@ -137,10 +137,10 @@ class User(Resource):
 		logging.info(data)
 		try:
 			user = data['user']
-			logging.info("Got request to put user: "+user)
+			logging.info("Got request to put siteA: "+user)
 			message,flag = utils.setUser(user)
 			if flag == 200:
-				return ("User posted")
+				return ("SiteA user posted")
 			else:
 				abort (flag, message = message)
 		except Exception as e:
@@ -153,7 +153,7 @@ class Client(Resource):
 		logging.info("Requesting client info")
 		client, flag = utils.getClient()
 		if flag == 200 :
-			return jsonify(client = client)
+			return jsonify(siteB = client)
 		else: 
 			abort(500)
 
@@ -164,10 +164,10 @@ class Client(Resource):
 		
 		try:
 			client = data['client']
-			logging.info("Got request to put client: "+client)
+			logging.info("Got request to put siteB: "+client)
 			message,flag = utils.setClient(client)
 			if flag == 200:
-				return ("Client posted")
+				return ("SiteB user posted")
 			else:
 				logging.error(message)
 				abort (flag)
