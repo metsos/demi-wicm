@@ -15,6 +15,7 @@ class Insert(Resource):
 
 	def post(self):
 		logging.info("POST API call incoming")
+		utils.pop_nets()
 		data = request.json
 		logging.debug("Recieved the following: "+str(data))
 		cond_name = data["instance_id"]
@@ -25,10 +26,16 @@ class Insert(Resource):
 		ordered_pop = utils.order_pop(pops) 
 		# Put the incoming PoPs in order 
 		logging.info("Calling set-up-the-rules method")
-		message = utils.setRules(cond_name, in_seg,out_seg,ordered_pop)
+		index = "1"
+		message = utils.setRules(cond_name, in_seg,out_seg,ordered_pop,index)
+		index = "2" #The reverse
+		cond_name2 = (cond_name + 'R')
+		ordered_pop.reverse()
+		flag = utils.setRules(cond_name2, out_seg,in_seg,ordered_pop,index)
+		flow = {"data" : data}
 		if flag == 200:
-			flows.append(data)
-			return jsonify({'flow': data}, 200)
+			flows.append(flow)
+			return jsonify({'flow': flow}, 200)
 		else:
 			abort(500, message = "Unknown Error")
 
@@ -49,6 +56,8 @@ class Flows(Resource):
 				flows.remove(flow)
 				logging.info("Resource found. Proceed to removal")
 				flag = utils.delete_condition(res_name)
+				res_name2 = (res_name + 'R') #the reverse rules
+				flag = utils.delete_condition(res_name2)
 				if flag == 200: 
 					return ("Resource was deleted")
 				else:

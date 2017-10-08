@@ -11,9 +11,9 @@ import vnf
 pyt = pytricia.PyTricia()
 e = create_engine('sqlite:///database/wim_info.db')
 
-def setRules(cond_name, in_seg,out_seg,ordered_pop):
+def setRules(cond_name, in_seg,out_seg,ordered_pop,index):
 		logging.info("Calling set_condition method")
-		flag = set_condition(cond_name,in_seg, out_seg)
+		flag = set_condition(cond_name,in_seg, out_seg,index)
 		logging.debug("Flag incoming:" +str(flag))
 		if flag != 200:
 			abort(500, message="Set condition uncompleted")
@@ -26,7 +26,7 @@ def setRules(cond_name, in_seg,out_seg,ordered_pop):
 			port_in = get_exit(vbr2)
 		bridge = vbr2 # Set final bridge
 		port = port_out
-		set_redirect(cond_name, vbr2, port_in, port_out)
+		set_redirect(cond_name, vbr2, port_in, port_out,index)
 		logging.info("Redirect from source to First PoP completed")
 		# Redirecting through the PoPs now
 		logging.debug("Redirect traffic through PoPs")
@@ -36,13 +36,13 @@ def setRules(cond_name, in_seg,out_seg,ordered_pop):
 			port_2, vbr2 = get_switch(getPopIP(ordered_pop[i]))
 			if vbr1 == vbr2:
 				logging.debug("port to redirect is: "+port_out+" with vbridge "+vbr2)
-				set_redirect(cond_name, vbr1, port_1, port_2)
+				set_redirect(cond_name, vbr1, port_1, port_2,index)
 			else:
 				logging.debug("redirecting through different bridges")
 				port_ex = get_exit(vbr1)
-				set_redirect(cond_name, vbr1, port_1, port_ex)
+				set_redirect(cond_name, vbr1, port_1, port_ex,index)
 				port_in = get_exit(vbr2)
-				set_redirect(cond_name, vbr2, port_in, port_2)
+				set_redirect(cond_name, vbr2, port_in, port_2,index)
 			bridge = vbr2
 			port = port_2
 		logging.debug(" Inter PoP redirections completed ")
@@ -52,13 +52,13 @@ def setRules(cond_name, in_seg,out_seg,ordered_pop):
 		elif exitbridge != bridge :
 			logging.debug("redirecting through different bridges")
 			port_ex = get_exit(bridge)
-			set_redirect(cond_name, bridge, port, port_ex)
+			set_redirect(cond_name, bridge, port, port_ex,index)
 			port = get_exit(exitbridge)
 			#set_redirect(cond_name, exitbridge, port_in, port_out)
 			bridge = exitbridge
 		else:
 			bridge = exitbridge
-		set_redirect(cond_name, bridge, port, port_out)
+		set_redirect(cond_name, bridge, port, port_out,index)
 		# Need to implement (or not) going from last PoP to Outer Segment -- leaving Wan 
 		#Just add to the flow array 
 		logging.info("Posting new flow completed")
@@ -105,12 +105,12 @@ def get_exit(vbr):
 	conn.close()
 	return port 
 
-def set_condition(cond_name, source, dest):
+def set_condition(cond_name, source, dest,index):
 	logging.debug("Incoming set_condition call")
 	s_url = 'operations/vtn-flow-condition:set-flow-condition'
 	username, password, host, url, headers = get_info()
 	data = {'input': {'name': cond_name, 'vtn-flow-match': [
-	    {'index': '1', 'vtn-inet-match': {'source-network': source, 'destination-network': dest}}]}}
+	    {'index': index, 'vtn-inet-match': {'source-network': source, 'destination-network': dest}}]}}
 	logging.debug("Data to be sent for flow setting in VTN: "+str(data))
 	'''
 	 this curl --user "username":"pass" -H "Content-type: application/json" -X POST http://localhost:8181/restconf/operations/vtn-flow-condition:set-flow-condition
@@ -137,13 +137,13 @@ def delete_condition(cond_name):
     	logging.error("Condition removal ERROR " + str(r.status_code))
     return r.status_code
 
-def set_redirect(cond_name, vbr, port_id_in, port_id_out):
+def set_redirect(cond_name, vbr, port_id_in, port_id_out,index):
 	s_url = 'operations/vtn-flow-filter:set-flow-filter'
 	logging.debug("Incoming set_redirect call")
 	username, password, host, url, headers = get_info()
 	vtn_name = get_vtn_name()
 	data = {"input": {"output": "false", "tenant-name": vtn_name, "bridge-name": vbr, "interface-name": port_id_in, "vtn-flow-filter": [
-	    {"index": "1", "condition": cond_name, "vtn-redirect-filter": {"redirect-destination": {"bridge-name": vbr, "interface-name": port_id_out}, "output": "true"}}]}}
+	    {"index": index, "condition": cond_name, "vtn-redirect-filter": {"redirect-destination": {"bridge-name": vbr, "interface-name": port_id_out}, "output": "true"}}]}}
 	'''
 	 this: curl --user "username":"pass" -H "Content-type: application/json" -X POST http://localhost:8181/restconf/operations/vtn-flow-filter:set-flow-filter
 	  -d '{"input":{"output":"false","tenant-name":"vtn1", "bridge-name":"vbr", interface-name":"if5", "vtn-flow-filter":[{"condition":"cond_1","index":"1","vtn-redirect-filter":

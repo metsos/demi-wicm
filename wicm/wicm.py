@@ -62,10 +62,10 @@ headers = {'Content type' : 'application/json'} #also this
 
 api.add_resource(Initialise,'/api/v1/nfvo/init')
 api.add_resource(Deleted, '/api/v1/nfvo/delete')
-api.add_resource(Insert, '/api/v1/flows/')
+api.add_resource(Insert, '/api/v1/flows')
 api.add_resource(Flows, '/api/v1/flows/<string:res_name>')
-api.add_resource(User, '/api/v1/user')
-api.add_resource(Client,'/api/v1/client')
+api.add_resource(User, '/api/v1/sitea')
+api.add_resource(Client,'/api/v1/siteb')
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, filename='wicm.log', format='%(asctime)s - %(levelname)s - %(message)s')
