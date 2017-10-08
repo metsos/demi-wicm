@@ -91,7 +91,12 @@ class Initialise(Resource):
 			out_seg, flag = utils.getClient()
 		except Exception as e:
 			abort(500,message = "Couldn't get User or Client") 
-		flag = utils.setRules(inst_id, in_seg,out_seg,pop_list)
+		index = '1'
+		flag = utils.setRules(inst_id, in_seg,out_seg,pop_list,index)
+		index = '2'
+		pop_list.reverse()
+		inst_id2 = (inst_id +'R')
+		flag = utils.setRules(inst_id2, out_seg,in_seg,pop_list,index)
 		daty = {"instance_id": inst_id , "in_seg": in_seg , "out_seg": out_seg , "VIM list": pop_list }
 		flow = { "data" : daty }
 		if flag == 200:
@@ -118,6 +123,8 @@ class Deleted(Resource):
 		inst_id = helpers[0]
 		logging.debug("New instance_id is: "+inst_id)
 		flag = utils.delete_condition(inst_id)
+		inst_id2 = (inst_id +'R')
+		lag = utils.delete_condition(inst_id2)
 		if flag == 200:
 			logging.info("Resource was deleted") 
 			return ("Resource was deleted")
