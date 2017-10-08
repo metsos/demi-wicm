@@ -143,7 +143,7 @@ class User(Resource):
 		logging.info("Requesting user info")
 		user, flag = utils.getUser()
 		if flag == 200:
-			return jsonify(siteA = user)
+			return jsonify(source = user)
 		else: 
 			abort(500)
 	
@@ -153,10 +153,10 @@ class User(Resource):
 		logging.info(data)
 		try:
 			user = data['user']
-			logging.info("Got request to put siteA: "+user)
+			logging.info("Got request to put source: "+user)
 			message,flag = utils.setUser(user)
 			if flag == 200:
-				return ("SiteA user posted")
+				return ("Source user posted")
 			else:
 				abort (flag, message = message)
 		except Exception as e:
@@ -169,7 +169,7 @@ class Client(Resource):
 		logging.info("Requesting client info")
 		client, flag = utils.getClient()
 		if flag == 200 :
-			return jsonify(siteB = client)
+			return jsonify(target = client)
 		else: 
 			abort(500)
 
@@ -180,10 +180,10 @@ class Client(Resource):
 		
 		try:
 			client = data['client']
-			logging.info("Got request to put siteB: "+client)
+			logging.info("Got request to put target: "+client)
 			message,flag = utils.setClient(client)
 			if flag == 200:
-				return ("SiteB user posted")
+				return ("Target user posted")
 			else:
 				logging.error(message)
 				abort (flag)

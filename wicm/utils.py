@@ -24,6 +24,8 @@ def setRules(cond_name, in_seg,out_seg,ordered_pop,index):
 		port_out, vbr2 = get_switch(getPopIP(ordered_pop[0]))
 		if vbr1 == 'notsure':
 			port_in = get_exit(vbr2)
+		if vbr1 != vbr2 :
+			port_in = get_exit(vbr2)
 		bridge = vbr2 # Set final bridge
 		port = port_out
 		set_redirect(cond_name, vbr2, port_in, port_out,index)
