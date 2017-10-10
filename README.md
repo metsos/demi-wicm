@@ -24,6 +24,9 @@ The WICM application has the following dependencies:
 * [pytricia](https://pypi.python.org/pypi/pytricia) >= 0.9.6 
 * [SQLAlchemy](https://pypi.python.org/pypi/SQLAlchemy/1.1.14) ==1.1.14
 
+### Licence
+This Software is published under Apache 2.0 license. Please see the LICENSE file for more details.
+
 #### Lead Developers
 
 The following lead developers are responsible for this repository and have admin rights. They can, for example, merge pull requests.
