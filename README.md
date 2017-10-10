@@ -11,7 +11,7 @@ In brief, the DEMI WICM application provides new mechanisms and tools in order t
 ### Building
 
 The WICM application is entirely written in Python and does not require a special build process. Run:
-* `python3 setup.py -install` in order to install dependencies
+* `python3 setup.py install` in order to install dependencies
 
 ### Dependencies
  
