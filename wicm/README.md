@@ -3,7 +3,7 @@ A WAN Infastructure Connectivity Manager (WICM) created for the DEMI Experiment 
 
 In brief, the DEMI WICM application provides new mechanisms and tools in order to describe the WAN network in terms of a set of common network abstractions and for this purpose WICM provides an abstraction to the NFVO to hide the specific characteristics of the underlying infrastructure. WICM is able to process and extract the networking graph defined in the Network Service Record (NSR) send by the NFVO after the successful initialisation of a Network Service Descriptor (NSD). Next, WICM orchestrates the services and infrastructure to establish connectivity over the physical network, providing the appropriate redirections of the traffic data through the PoPs defined in the NSR.
 
-##Installation and Configuration 
+### Installation and Configuration 
 
 In order for the WICM to function, you will have to install Opendaylight with VTN Manager as well as make configurations on the WICMs database providing all the underlying physical network info. 
 More information and instructions on how to achieve it are on the wiki: https://github.com/metsos/demi-wicm/wiki/Configuration
