@@ -17,12 +17,12 @@ while True:
 	segment = input("Enter Segment: ")
 	pop_name = input("If it is a VIM, please enter name as declared in OPB. Else you can leave it blank: ")
 	bridge_name = input("Enter Vbridge name: ")
-	port_id = input("Enter port_id: ")
+	port_id = input("Enter interface_id: ")
 	print("You provided the following info: ")
 	print("Segment: "+segment)
 	print("VIM name: "+pop_name)
 	print ("Bridge name: " +bridge_name)
-	print ("Port ID: "+port_id)
+	print ("Interface ID: "+port_id)
 	var = input("If dissagree type 'q' ")
 	if var == 'q':
 		break
