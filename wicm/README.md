@@ -9,9 +9,21 @@ In order for the WICM to function, you will have to install Opendaylight with VT
 More information and instructions on how to achieve it are on the wiki: https://github.com/metsos/demi-wicm/wiki/Configuration
 
 Once the configuration is completed, you may run the following command to start WICM: 
-`python3 wicm/wicm.py -v vtnHostIP -u username -p userpassword -n VTN_name`
+`python3 wicm/wicm.py -v vtnHostIP -u username -p userpassword -n VTN_name` 
+Replacing the variables with the appropiate data. 
 
 Once started a log will be created in the folder with the name wicm.log 
 
 The REST API documentation can also be found in the wiki: https://github.com/metsos/demi-wicm/wiki/REST-API-Documentation
 
+### Usage 
+
+The WICM can either start a new network service by recieving a JSON message directly from the NFVO Openbaton, or it can be done manually. 
+In the first case, in the configuration section of the wiki, more information can be found and instructions on how to achieve it. 
+In the latter case, a JSON message should be sent to the interface of WICM that has to have the following format: 
+
+`{ "instance_id": String, "in_seg": “xxx.xxx.xxx.xxx./xx”, "out_seg": “xxx.xxx.xxx.xxx./xx”, "vims": [ { "port": VIM_Name, "order": Integer } ] }`
+
+The request should be sent to: `http:/wicm_ip:5000//api/v1/flows`
+
+An example request : `curl  -x POST http://192.168.1.199:5000/api/v1/flows -d ‘{ "instance_id": “596k92”, "in_seg": “192.168.10.10/32”, "out_seg": “192.168.20.10/32”, "vims": [ { "port": “vim_one”, "order": 0 },{ "port": “vim_two”, "order": 1 } ] }’`
