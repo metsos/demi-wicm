@@ -3,7 +3,7 @@ A WAN Infastructure Connectivity Manager (WICM) created for the DEMI Experiment 
 
 In brief, the DEMI WICM application provides new mechanisms and tools in order to describe the WAN network in terms of a set of common network abstractions and for this purpose WICM provides an abstraction to the NFVO to hide the specific characteristics of the underlying infrastructure. WICM is able to process and extract the networking graph defined in the Network Service Record (NSR) send by the NFVO after the successful initialisation of a Network Service Descriptor (NSD). Next, WICM orchestrates the services and infrastructure to establish connectivity over the physical network, providing the appropriate redirections of the traffic data through the PoPs defined in the NSR. 
 
-## Repository Structure
+### Repository Structure
   
  * `WICM` contains WICM source files.
     * `database` contains the scripts in order to build and populate the WICM DB.
