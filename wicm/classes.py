@@ -152,7 +152,7 @@ class User(Resource):
 		data = request.get_json(force=True) # So that it gets it not matter what content send
 		logging.info(data)
 		try:
-			user = data['user']
+			user = data['source']
 			logging.info("Got request to put source: "+user)
 			message,flag = utils.setUser(user)
 			if flag == 200:
@@ -179,7 +179,7 @@ class Client(Resource):
 		logging.info(data) 
 		
 		try:
-			client = data['client']
+			client = data['target']
 			logging.info("Got request to put target: "+client)
 			message,flag = utils.setClient(client)
 			if flag == 200:
